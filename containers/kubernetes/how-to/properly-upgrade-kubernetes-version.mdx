@@ -56,7 +56,7 @@ Here's how:
 4. Once the new nodes are ready, you can start draining the old nodes, you may need to add the option `--delete-emptydir-data` if you used local disk as a scratchpad.
   `kubectl drain --ignore-daemonsets $NODE_TO_DRAIN`
     <Message type="important">
-        **Do not** drain all the nodes simultaneously. Prefer doing it sequentially, making sure your workload is behaving as expected.
+        **Do not** drain all the nodes simultaneously. Make sure to do it sequentially, while checking your workload is behaving as expected.
     </Message>
 5. At this point, nodes from your old pool should be empty of any workload. If so, they are ready for deletion.
   `kubectl delete node $OLD_NODE_A $OLD_NODE_B $OLD_NODE_C ...`
@@ -67,11 +67,11 @@ Here's how:
 
 If your cluster is using a deprecated CNI, and you are willing to upgrade to a newer k8s version, you will most likely have to spin up a new Kapsule cluster.
 As of now, we do not provide an easy way to change CNI. This component is integrated with each cluster node which results in a tricky transition.
-Do not hesitate to contact us on our Slack community channel #k8s or open a support ticket if you're in this situation and need help.
+Do not hesitate to contact us on our [Slack community](scaleway-community.slack.com) channel #k8s or open a support ticket if you have any issues.
 
 ## Effective Upgrade
 
-So, we have two possible paths from here, you're either upgrading one minor version or multiple ones.
+From here, two options are available: you are either upgrading **one minor version** or **multiple ones**.
 
 ### One minor version
 
@@ -82,7 +82,7 @@ You can choose to upgrade the pools as well, if so append the previous command w
 You can also upgrade one pool independently with
 `scw k8s pool upgrade $POOL_ID version=$NEW_K8S_VERSION`
 
-You can be extra cautious and migrate manually your workload. To do so, follow the steps described in [runtimes](###Container runtimes) section,
+You can be extra cautious and migrate manually your workload. To do so, follow the steps described in [runtimes](#container-runtimes) section,
 just adapt the pool creation step
 `scw k8s pool create zone=$OLD_POOL_ZONE size=$SIZE_OF_YOUR_OLD_POOL version=$NEW_CLUSTER_VERSION cluster-id=$CLUSTER_ID`
 
@@ -92,5 +92,5 @@ Monitor your workload, congrats you are using a newer, maybe the latest kubernet
 
 The process is quite similar to the previous one except you need to repeat the steps for each minor version.
 <Message type="important">
-    Your pools and your control plane SHOULD NEVER have more than a one-minor-version delta or you can expect things to break
+    Your pools and your control plane **should never** have more than one minor version delta.
 </Message>
