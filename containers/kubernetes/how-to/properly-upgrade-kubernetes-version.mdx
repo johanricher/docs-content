@@ -19,7 +19,7 @@ categories:
     you're willing to upgrade it.
 </Message>
 
-First, we'll make sure your workload can be properly handled by the newer Kapsule version. We have a compatibility matrix
+First, we will ensure the newer Kapsule version properly handles your workload. We have a compatibility matrix
 for different components and your current cluster may use components that are deprecated or not available on the new version.
 Please see our [version policy](https://www.scaleway.com/en/docs/containers/kubernetes/reference-content/version-support-policy/).
 
@@ -37,7 +37,7 @@ e.g.
 
 ### Ingresses
 
-Managed Ingresses are deprecated since the minor release 1.24, we provide the feature EasyDeploy instead to set up an ingress controller.
+Managed ingress controllers are deprecated since the minor release 1.24, we provide the feature EasyDeploy instead to set up an ingress controller.
 You can also deploy an ingress controller by yourself to fine tune its settings.
 
 To update a cluster to a version superior to 1.23, this command is necessary to deactivate the managed ingress controller
@@ -51,12 +51,12 @@ Here's how:
   `scw k8s pool create container-runtime=containerd zone=$POOL_ZONE size=$SIZE_OF_YOUR_OLD_POOL version=$YOUR_CLUSTER_VERSION cluster-id=$CLUSTER_ID`
 2. Wait for the nodes to be provisioned
   `scw k8s pool wait $POOL_ID`
-3. In parallel, you can start cordoning nodes using the old runtime. this way, workload will get rescheduled directly on the containerd nodes.
+3. In parallel, you can start cordoning nodes using the old runtime. This way, the workload will get rescheduled directly on the `containerd` nodes.
   `kubectl cordon $OLD_NODE_A $OLD_NODE_B $OLD_NODE_C ...`
 4. Once the new nodes are ready, you can start draining the old nodes, you may need to add the option `--delete-emptydir-data` if you used local disk as a scratchpad.
   `kubectl drain --ignore-daemonsets $NODE_TO_DRAIN`
     <Message type="important">
-        DO NOT drain all the nodes simultaneously, prefer doing it sequentially, making sure your workload is behaving as expected
+        **Do not** drain all the nodes simultaneously. Prefer doing it sequentially, making sure your workload is behaving as expected.
     </Message>
 5. At this point, nodes from your old pool should be empty of any workload. If so, they are ready for deletion.
   `kubectl delete node $OLD_NODE_A $OLD_NODE_B $OLD_NODE_C ...`
@@ -65,8 +65,8 @@ Here's how:
 
 ### CNIs
 
-If your cluster is using a deprecated CNI, and you're willing to upgrade to a newer k8s version, you will most likely have to spin up a new Kapsule cluster.
-We do not provide (as of now) an easy way to change CNI. This component is integrated in each cluster node which results in a tricky transition.
+If your cluster is using a deprecated CNI, and you are willing to upgrade to a newer k8s version, you will most likely have to spin up a new Kapsule cluster.
+As of now, we do not provide an easy way to change CNI. This component is integrated with each cluster node which results in a tricky transition.
 Do not hesitate to contact us on our Slack community channel #k8s or open a support ticket if you're in this situation and need help.
 
 ## Effective Upgrade
